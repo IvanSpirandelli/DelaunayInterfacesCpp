@@ -2,17 +2,9 @@
 
 A C++ library for computing interface surfaces from multicolored point clouds using Delaunay/alpha complexes and barycentric subdivision.
 
-This is a C++ implementation with bindings for both Julia and Python. The original [DelaunayInterfaces.jl](https://github.com/ivanspirandelli/DelaunayInterfaces.jl) Julia package is maintained for visualization purposes.
-
 ## Features
 
 - Compute interface surfaces from colored 3D point clouds
-- Support for:
-  - Regular Delaunay triangulation
-  - Weighted Delaunay triangulation
-  - Weighted alpha complexes
-- Barycentric subdivision with filtration values
-- High-performance C++ implementation using CGAL
 - Python bindings via pybind11
 - Julia bindings via CxxWrap.jl
 
