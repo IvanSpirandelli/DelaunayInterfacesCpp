@@ -57,7 +57,7 @@ filtration = surface.filtration
 ### Julia Bindings (to C++)
 
 ```julia
-using DelaunayInterfacesCpp
+using DelaunayInterfaces  # C++ backed
 
 points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], ...]
 colors = [1, 1, 2, 2]
@@ -160,7 +160,7 @@ Actual speedups depend on:
 ### Step 1: Install C++ Library
 
 ```bash
-cd DelaunayInterfacesCpp
+cd DelaunayInterfaces
 mkdir build && cd build
 cmake ..
 make -j4
@@ -169,14 +169,9 @@ sudo make install
 
 ### Step 2: Update Julia Code (Option A: Keep Julia)
 
-Replace:
+Update your Julia code to use the C++ backed version:
 ```julia
 using DelaunayInterfaces
-```
-
-With:
-```julia
-using DelaunayInterfacesCpp
 ```
 
 Most code should work with minimal changes. The API is designed to be compatible.
@@ -194,16 +189,19 @@ from delaunay_interfaces import InterfaceGenerator
 
 ## Gradual Migration Strategy
 
-You can use both versions side-by-side:
+You can compare both implementations if needed:
 
 ```julia
-using DelaunayInterfaces as DI_Old
-using DelaunayInterfacesCpp as DI_New
+# Original Julia implementation (from DelaunayInterfaces.jl)
+import DelaunayInterfaces as DI_Old
 
-# Old code continues to work
+# New C++ backed version
+using DelaunayInterfaces as DI_New
+
+# Old implementation
 surface_old = DI_Old.InterfaceSurface(points, colors, radii)
 
-# New code for performance-critical sections
+# New C++ implementation
 surface_new = DI_New.InterfaceSurface(points, colors, radii)
 
 # Compare results

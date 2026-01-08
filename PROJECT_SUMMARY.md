@@ -1,10 +1,10 @@
-# DelaunayInterfaces C++ - Project Summary
+# DelaunayInterfaces - Project Summary
 
 ## Overview
 
 Successfully created a complete C++ implementation of DelaunayInterfaces with bindings for both Julia and Python.
 
-**Repository Location:** `/Users/ivanspirandelli/PostDoc/Code/DelaunayInterfacesCpp`
+**Repository Location:** `/Users/ivanspirandelli/PostDoc/Code/DelaunayInterfaces`
 
 ## Project Statistics
 
@@ -18,7 +18,7 @@ Successfully created a complete C++ implementation of DelaunayInterfaces with bi
 ## Directory Structure
 
 ```
-DelaunayInterfacesCpp/
+DelaunayInterfaces/
 ├── CMakeLists.txt           # Main build configuration
 ├── README.md                # User documentation
 ├── BUILD.md                 # Detailed build instructions
@@ -45,7 +45,7 @@ DelaunayInterfacesCpp/
 ├── julia/                   # Julia bindings (CxxWrap.jl)
 │   ├── CMakeLists.txt
 │   ├── bindings.cpp
-│   └── DelaunayInterfacesCpp.jl
+│   └── DelaunayInterfaces.jl
 │
 ├── examples/                # Example programs
 │   ├── simple_example.cpp
@@ -180,7 +180,7 @@ Created comprehensive test suite covering:
 
 2. **Build and Test:**
    ```bash
-   cd /Users/ivanspirandelli/PostDoc/Code/DelaunayInterfacesCpp
+   cd /Users/ivanspirandelli/PostDoc/Code/DelaunayInterfaces
    mkdir build && cd build
    cmake ..
    make -j4

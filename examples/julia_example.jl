@@ -6,7 +6,7 @@ This example demonstrates how to use the Julia bindings for the
 DelaunayInterfaces C++ library.
 """
 
-using DelaunayInterfacesCpp
+using DelaunayInterfaces
 
 function main()
     println("DelaunayInterfaces Julia Example")

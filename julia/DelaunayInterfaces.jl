@@ -1,4 +1,4 @@
-module DelaunayInterfacesCpp
+module DelaunayInterfaces
 
 using CxxWrap
 

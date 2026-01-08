@@ -1,6 +1,6 @@
 # Build Instructions
 
-This guide provides detailed instructions for building DelaunayInterfaces C++ on different platforms.
+This guide provides detailed instructions for building DelaunayInterfaces on different platforms.
 
 ## Prerequisites
 
@@ -72,7 +72,7 @@ cd vcpkg
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd DelaunayInterfacesCpp
+cd DelaunayInterfaces
 
 # Create build directory
 mkdir build
@@ -137,7 +137,7 @@ make -j4
 Then in Julia:
 ```julia
 using Pkg
-Pkg.develop(path="/path/to/DelaunayInterfacesCpp/julia")
+Pkg.develop(path="/path/to/DelaunayInterfaces/julia")
 ```
 
 ## Troubleshooting
@@ -220,8 +220,8 @@ print(delaunay_interfaces.__version__)
 ### Julia Bindings
 
 ```julia
-using DelaunayInterfacesCpp
-println(DelaunayInterfacesCpp.VERSION)
+using DelaunayInterfaces
+println(DelaunayInterfaces.VERSION)
 ```
 
 ## Running Tests

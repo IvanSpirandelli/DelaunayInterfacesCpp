@@ -1,8 +1,8 @@
-# DelaunayInterfaces C++
+# DelaunayInterfaces
 
 A C++ library for computing interface surfaces from multicolored point clouds using Delaunay/alpha complexes and barycentric subdivision.
 
-This is a C++ implementation of the original [DelaunayInterfaces.jl](https://github.com/ivanspirandelli/DelaunayInterfaces.jl) Julia package, with bindings for both Julia and Python.
+This is a C++ implementation with bindings for both Julia and Python. The original [DelaunayInterfaces.jl](https://github.com/ivanspirandelli/DelaunayInterfaces.jl) Julia package is maintained for visualization purposes.
 
 ## Features
 
@@ -49,7 +49,7 @@ Pkg.add("CxxWrap")
 
 ```bash
 git clone <repository-url>
-cd DelaunayInterfacesCpp
+cd DelaunayInterfaces
 mkdir build && cd build
 cmake ..
 make -j4
@@ -113,7 +113,7 @@ pip install .
 ```julia
 # After building with BUILD_JULIA_BINDINGS=ON
 using Pkg
-Pkg.develop(path="path/to/DelaunayInterfacesCpp/julia")
+Pkg.develop(path="path/to/DelaunayInterfaces/julia")
 ```
 
 ## Usage
@@ -191,7 +191,7 @@ vertices, filtration = get_barycentric_subdivision_and_filtration(
 ### Julia
 
 ```julia
-using DelaunayInterfacesCpp
+using DelaunayInterfaces
 
 # Define points
 points = [
@@ -218,6 +218,23 @@ vertices, filtration = get_barycentric_subdivision_and_filtration(
     points, colors, radii, true, true
 )
 ```
+
+## Understanding the Output
+
+The main computation returns two components:
+
+### Vertices (Barycenters)
+A list of 3D points representing the barycenters computed from the barycentric subdivision of multicolored tetrahedra.
+
+### Filtration
+In topological data analysis (TDA), a **filtration** is a nested sequence of simplicial complexes indexed by a parameter. Here, the filtration is represented as a list of pairs `(simplex, filtration_value)` where:
+- **simplex**: A list of vertex indices (into the vertices array)
+  - Size 1: vertices (0-simplices)
+  - Size 2: edges (1-simplices)
+  - Size 3: triangles (2-simplices) - **these form the interface surface**
+- **filtration_value**: The parameter value at which the simplex appears in the filtered complex, computed from distances between color partition barycenters
+
+To extract the interface surface triangles, filter the filtration for simplices of size 3.
 
 ## Algorithm Overview
 
