@@ -1,6 +1,6 @@
 # DelaunayInterfaces C++
 
-A high-performance C++ library for computing interface surfaces from multicolored point clouds using Delaunay/alpha complexes and barycentric subdivision.
+A C++ library for computing interface surfaces from multicolored point clouds using Delaunay/alpha complexes and barycentric subdivision.
 
 This is a C++ implementation of the original [DelaunayInterfaces.jl](https://github.com/ivanspirandelli/DelaunayInterfaces.jl) Julia package, with bindings for both Julia and Python.
 
@@ -45,6 +45,8 @@ Pkg.add("CxxWrap")
 
 ## Building from Source
 
+### Basic Build
+
 ```bash
 git clone <repository-url>
 cd DelaunayInterfacesCpp
@@ -64,6 +66,34 @@ Example:
 ```bash
 cmake -DBUILD_PYTHON_BINDINGS=ON -DBUILD_JULIA_BINDINGS=OFF ..
 ```
+
+### Building with Julia Bindings (CxxWrap.jl)
+
+When building with Julia bindings enabled, CMake needs to locate the `libcxxwrap-julia` library. The recommended approach is to use CxxWrap.jl's CMake prefix path:
+
+1. First, get the CxxWrap prefix path from Julia:
+```julia
+using CxxWrap
+CxxWrap.prefix_path()
+```
+
+2. Then build with the prefix path:
+```bash
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_PREFIX_PATH=/path/to/libcxxwrap-julia-prefix \
+      ..
+cmake --build . --config Release
+```
+
+#### Requirements for Julia Bindings
+
+- C++17 compatible compiler (GCC 7+, clang 5+, or Xcode 9.3+ for macOS)
+- CxxWrap.jl installed in Julia (uses `libcxxwrap_julia_jll` for binary management)
+
+#### Platform-Specific Notes
+
+- **Windows/MSVC**: Default CxxWrap binaries use GCC cross-compilation and are incompatible with Visual Studio C++. You must build `libcxxwrap-julia` and wrapper modules from source. See the [libcxxwrap-julia README](https://github.com/JuliaInterop/libcxxwrap-julia) Windows section for details.
 
 ## Installation
 
@@ -199,30 +229,6 @@ The library implements the following algorithm:
 4. **Barycentric Subdivision**: Subdivides each multicolored tetrahedron based on its chromatic partitioning
 5. **Filtration Computation**: Computes filtration values based on Euclidean distances between partition barycenters
 
-## Performance
-
-The C++ implementation offers significant performance improvements over the original Julia implementation:
-- Direct CGAL integration (no Python interop overhead)
-- Optimized memory management
-- Parallel processing capabilities (future enhancement)
-
-## Citation
-
-If you use this library in your research, please cite:
-
-```
-[Citation information to be added]
-```
-
 ## License
 
 [License to be determined]
-
-## Authors
-
-- Ivan Spirandelli (original Julia implementation)
-- C++ port: [To be added]
-
-## Acknowledgments
-
-This C++ implementation is based on the original [DelaunayInterfaces.jl](https://github.com/ivanspirandelli/DelaunayInterfaces.jl) package.
