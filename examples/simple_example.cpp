@@ -31,8 +31,7 @@ int main() {
     std::cout << "------------------------------------\n";
     {
         InterfaceGenerator generator;
-        ComplexConfig config{false, false};
-        auto surface = generator.compute_interface_surface(points, colors, {}, config);
+        auto surface = generator.compute_interface_surface(points, colors, {}, false, false);
 
         std::cout << "  Barycenters: " << surface.vertices.size() << "\n";
         std::cout << "  Filtration simplices: " << surface.filtration.size() << "\n\n";
@@ -45,8 +44,7 @@ int main() {
         Radii radii(points.size(), 0.3);
 
         InterfaceGenerator generator;
-        ComplexConfig config{true, true};
-        auto surface = generator.compute_interface_surface(points, colors, radii, config);
+        auto surface = generator.compute_interface_surface(points, colors, radii, true, true);
 
         std::cout << "  Barycenters: " << surface.vertices.size() << "\n";
         std::cout << "  Filtration simplices: " << surface.filtration.size() << "\n\n";

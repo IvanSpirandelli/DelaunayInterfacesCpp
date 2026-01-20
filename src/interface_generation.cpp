@@ -22,8 +22,8 @@ using Weighted_point = K::Weighted_point_3;
 using Regular = CGAL::Regular_triangulation_3<K>;
 
 // For alpha shapes
-using Vb_alpha = CGAL::Alpha_shape_vertex_base_3<K>;
-using Fb_alpha = CGAL::Alpha_shape_cell_base_3<K>;
+using Vb_alpha = CGAL::Triangulation_vertex_base_3<K>;
+using Fb_alpha = CGAL::Alpha_shape_cell_base_3<K, Vb_alpha>;
 using Tds_alpha = CGAL::Triangulation_data_structure_3<Vb_alpha, Fb_alpha>;
 using Triangulation_3 = CGAL::Delaunay_triangulation_3<K, Tds_alpha>;
 using Alpha_shape_3 = CGAL::Alpha_shape_3<Triangulation_3>;
@@ -175,10 +175,11 @@ Tetrahedra InterfaceGenerator::get_multicolored_tetrahedra(
     const Points& points,
     const ColorLabels& color_labels,
     const Radii& radii,
-    const ComplexConfig& config
+    bool weighted,
+    bool alpha
 ) {
-    if (config.weighted) {
-        if (config.alpha) {
+    if (weighted) {
+        if (alpha) {
             return get_multicolored_tetrahedra_weighted_alpha(points, color_labels, radii);
         } else {
             return get_multicolored_tetrahedra_weighted_delaunay(points, color_labels, radii);
@@ -192,13 +193,14 @@ InterfaceSurface InterfaceGenerator::compute_interface_surface(
     const Points& points,
     const ColorLabels& color_labels,
     const Radii& radii,
-    const ComplexConfig& config
+    bool weighted,
+    bool alpha
 ) {
     auto [vertices, filtration] = get_barycentric_subdivision_and_filtration(
-        points, color_labels, radii, config.weighted, config.alpha
+        points, color_labels, radii, weighted, alpha
     );
 
-    return InterfaceSurface{vertices, filtration, config.weighted, config.alpha};
+    return InterfaceSurface{vertices, filtration, weighted, alpha};
 }
 
 } // namespace delaunay_interfaces

@@ -10,13 +10,6 @@ using namespace delaunay_interfaces;
 PYBIND11_MODULE(delaunay_interfaces, m) {
     m.doc() = "DelaunayInterfaces: Compute interface surfaces from multicolored point clouds";
 
-    // Bind ComplexConfig
-    py::class_<ComplexConfig>(m, "ComplexConfig")
-        .def(py::init<>())
-        .def(py::init<bool, bool>(), py::arg("weighted"), py::arg("alpha"))
-        .def_readwrite("weighted", &ComplexConfig::weighted)
-        .def_readwrite("alpha", &ComplexConfig::alpha);
-
     // Bind InterfaceSurface
     py::class_<InterfaceSurface>(m, "InterfaceSurface")
         .def(py::init<>())
@@ -36,7 +29,8 @@ PYBIND11_MODULE(delaunay_interfaces, m) {
             py::arg("points"),
             py::arg("color_labels"),
             py::arg("radii") = Radii{},
-            py::arg("config") = ComplexConfig{},
+            py::arg("weighted") = true,
+            py::arg("alpha") = true,
             "Compute the interface surface from colored points\n\n"
             "Parameters\n"
             "----------\n"
@@ -46,8 +40,10 @@ PYBIND11_MODULE(delaunay_interfaces, m) {
             "    Color label for each point\n"
             "radii : list of float, optional\n"
             "    Radius for each point (required if weighted=True)\n"
-            "config : ComplexConfig, optional\n"
-            "    Configuration for complex type\n\n"
+            "weighted : bool, default=True\n"
+            "    Use weighted Delaunay/alpha complex\n"
+            "alpha : bool, default=True\n"
+            "    Use alpha complex (vs Delaunay complex)\n\n"
             "Returns\n"
             "-------\n"
             "InterfaceSurface\n"
@@ -56,8 +52,21 @@ PYBIND11_MODULE(delaunay_interfaces, m) {
             py::arg("points"),
             py::arg("color_labels"),
             py::arg("radii") = Radii{},
-            py::arg("config") = ComplexConfig{},
+            py::arg("weighted") = true,
+            py::arg("alpha") = true,
             "Get all multicolored tetrahedra from the complex\n\n"
+            "Parameters\n"
+            "----------\n"
+            "points : list of 3D points\n"
+            "    The input point cloud\n"
+            "color_labels : list of int\n"
+            "    Color label for each point\n"
+            "radii : list of float, optional\n"
+            "    Radius for each point (required if weighted=True)\n"
+            "weighted : bool, default=True\n"
+            "    Use weighted Delaunay/alpha complex\n"
+            "alpha : bool, default=True\n"
+            "    Use alpha complex (vs Delaunay complex)\n\n"
             "Returns\n"
             "-------\n"
             "list of arrays\n"

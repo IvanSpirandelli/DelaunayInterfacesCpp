@@ -426,9 +426,8 @@ std::pair<Points, Filtration> get_barycentric_subdivision_and_filtration(
         throw std::invalid_argument("Each point must have an assigned radius for weighted complexes");
     }
 
-    ComplexConfig config{weighted, alpha};
     InterfaceGenerator generator;
-    auto tetrahedra = generator.get_multicolored_tetrahedra(points, color_labels, radii, config);
+    auto tetrahedra = generator.get_multicolored_tetrahedra(points, color_labels, radii, weighted, alpha);
 
     BarycentricSubdivision subdivision(points, color_labels);
 

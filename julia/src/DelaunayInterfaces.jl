@@ -2,7 +2,7 @@ module DelaunayInterfaces
 
 using CxxWrap
 
-@wrapmodule(() -> joinpath(dirname(@__FILE__), "..", "build", "julia", "libdelaunay_interfaces_jl"))
+@wrapmodule(() -> joinpath(dirname(@__FILE__), "..", "..", "build", "julia", "libdelaunay_interfaces_jl"))
 
 function __init__()
     @initcxx
@@ -40,8 +40,7 @@ function InterfaceSurface(
     alpha::Bool = true
 )
     gen = InterfaceGenerator()
-    config = ComplexConfig(weighted, alpha)
-    return compute_interface_surface(gen, points, color_labels, radii, config)
+    return compute_interface_surface(gen, points, color_labels, radii, weighted, alpha)
 end
 
 """
@@ -50,7 +49,7 @@ end
 Get all multicolored tetrahedra from the Delaunay/alpha complex.
 
 # Returns
-- Vector of tetrahedra, where each tetrahedron is a 4-element array of vertex indices
+- Matrix where each row is a tetrahedron with 4 vertex indices [v0, v1, v2, v3]
 """
 function get_multicolored_tetrahedra_wrapper(
     points::Vector{Vector{Float64}},
@@ -60,11 +59,16 @@ function get_multicolored_tetrahedra_wrapper(
     alpha::Bool = true
 )
     gen = InterfaceGenerator()
-    config = ComplexConfig(weighted, alpha)
-    return get_multicolored_tetrahedra(gen, points, color_labels, radii, config)
+    flat_result = get_multicolored_tetrahedra(gen, points, color_labels, radii, weighted, alpha)
+
+    # Reshape flat array into matrix where each row is a tetrahedron
+    if isempty(flat_result)
+        return Matrix{Int}(undef, 0, 4)
+    end
+    return reshape(flat_result, 4, :)'
 end
 
-export InterfaceSurface, InterfaceGenerator, ComplexConfig
-export get_multicolored_tetrahedra_wrapper, get_barycentric_subdivision_and_filtration
+export InterfaceSurface, InterfaceGenerator
+export get_multicolored_tetrahedra_wrapper
 
 end # module

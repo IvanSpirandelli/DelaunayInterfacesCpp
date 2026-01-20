@@ -15,7 +15,8 @@ public:
         const Points& points,
         const ColorLabels& color_labels,
         const Radii& radii = {},
-        const ComplexConfig& config = ComplexConfig{}
+        bool weighted = true,
+        bool alpha = true
     );
 
     // Get multicolored tetrahedra
@@ -23,7 +24,8 @@ public:
         const Points& points,
         const ColorLabels& color_labels,
         const Radii& radii = {},
-        const ComplexConfig& config = ComplexConfig{}
+        bool weighted = true,
+        bool alpha = true
     );
 
 private:

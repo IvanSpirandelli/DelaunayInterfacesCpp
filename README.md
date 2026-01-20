@@ -44,8 +44,10 @@ git clone <repository-url>
 cd DelaunayInterfaces
 mkdir build && cd build
 cmake ..
-make -j4
+sudo make install  # Note: sudo required on some systems for file permissions
 ```
+
+**Note**: On macOS, you may need to use `sudo make install` due to file permission requirements during the build process.
 
 ### Build Options
 
@@ -102,11 +104,22 @@ pip install .
 ```
 
 ### Julia Package
+
+The Julia package requires the C++ library to be built first with `BUILD_JULIA_BINDINGS=ON`.
+
 ```julia
-# After building with BUILD_JULIA_BINDINGS=ON
+# After building the C++ library with Julia bindings
 using Pkg
 Pkg.develop(path="path/to/DelaunayInterfaces/julia")
+using DelaunayInterfaces
 ```
+
+**Julia Package Structure**:
+- `julia/Project.toml` - Package metadata and dependencies
+- `julia/src/DelaunayInterfaces.jl` - Main module
+- Build artifacts are in `build/julia/`
+
+**Compatibility**: Julia 1.9-1.10, CxxWrap 0.14-0.15
 
 ## Usage
 
@@ -193,23 +206,40 @@ points = [
     [0.0, 0.0, 1.0]
 ]
 
-# Color labels (Julia uses 1-based indexing, but colors can be any integers)
+# Color labels (can be any integers, at least 2 different colors needed)
 colors = [1, 1, 2, 2]
 
-# Radii
+# Radii (required for weighted complexes)
 radii = [0.5, 0.5, 0.5, 0.5]
 
-# Compute interface surface
-surface = InterfaceSurface(points, colors, radii; weighted=true, alpha=true)
+# Create configuration
+config = ComplexConfig(true, true)  # weighted=true, alpha=true
 
-println("Number of barycenters: ", length(vertices(surface)))
-println("Filtration size: ", length(filtration(surface)))
+# Create generator and compute interface surface
+gen = InterfaceGenerator()
+surface = compute_interface_surface(gen, points, colors, radii, config)
 
-# Or use the convenience function
-vertices, filtration = get_barycentric_subdivision_and_filtration(
-    points, colors, radii, true, true
-)
+# Access vertices (note: 0-based indexing from C++)
+println("Number of vertices: ", num_vertices(surface))
+for i in 0:num_vertices(surface)-1
+    vertex = get_vertex(surface, i)
+    println("Vertex $i: ", vertex)
+end
+
+# Access filtration
+println("Number of simplices: ", num_simplices(surface))
+for i in 0:num_simplices(surface)-1
+    simplex_vertices = get_simplex_vertices(surface, i)
+    simplex_value = get_simplex_value(surface, i)
+    println("Simplex $i: vertices=$simplex_vertices, value=$simplex_value")
+end
+
+# Get multicolored tetrahedra
+tets = get_multicolored_tetrahedra(gen, points, colors, radii, config)
+println("Number of multicolored tetrahedra: ", length(tets))
 ```
+
+**Note**: Julia bindings use 0-based indexing for accessing vertices and simplices (inherited from C++), but the vertex indices in simplices are also 0-based.
 
 ## Understanding the Output
 
@@ -237,7 +267,3 @@ The library implements the following algorithm:
 3. **Chromatic Partitioning**: Groups vertices of each tetrahedron by color
 4. **Barycentric Subdivision**: Subdivides each multicolored tetrahedron based on its chromatic partitioning
 5. **Filtration Computation**: Computes filtration values based on Euclidean distances between partition barycenters
-
-## License
-
-[License to be determined]

@@ -23,6 +23,9 @@ using Partition = std::vector<std::vector<int>>;
 struct ComplexConfig {
     bool weighted = true;
     bool alpha = true;
+
+    ComplexConfig() = default;
+    ComplexConfig(bool w, bool a) : weighted(w), alpha(a) {}
 };
 
 // Result structure

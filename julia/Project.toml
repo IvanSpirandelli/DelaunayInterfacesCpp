@@ -1,0 +1,12 @@
+name = "DelaunayInterfaces"
+uuid = "8b5e8f5a-6c7d-4e3f-9b2a-1c8d7e6f5a4b"
+authors = ["Ivan Spirandelli"]
+version = "0.1.0"
+
+[deps]
+CxxWrap = "1f15a43c-97ca-5a2a-ae31-89f07a497df4"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
+[compat]
+CxxWrap = "0.14, 0.15"
+julia = "1.9, 1.10"

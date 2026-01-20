@@ -2,6 +2,7 @@
 
 #include "types.hpp"
 #include <algorithm>
+#include <map>
 
 namespace delaunay_interfaces {
 

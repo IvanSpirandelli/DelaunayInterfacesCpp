@@ -56,10 +56,9 @@ void test_simple_delaunay() {
     ColorLabels colors = {1, 1, 1, 2, 2, 2};
 
     InterfaceGenerator generator;
-    ComplexConfig config{false, false};
 
     try {
-        auto surface = generator.compute_interface_surface(points, colors, {}, config);
+        auto surface = generator.compute_interface_surface(points, colors, {}, false, false);
         std::cout << "  Found " << surface.vertices.size() << " barycenters\n";
         std::cout << "  Found " << surface.filtration.size() << " filtration simplices\n";
         assert(surface.vertices.size() > 0);
@@ -87,10 +86,9 @@ void test_weighted_alpha() {
     Radii radii(points.size(), 0.3);
 
     InterfaceGenerator generator;
-    ComplexConfig config{true, true};
 
     try {
-        auto surface = generator.compute_interface_surface(points, colors, radii, config);
+        auto surface = generator.compute_interface_surface(points, colors, radii, true, true);
         std::cout << "  Found " << surface.vertices.size() << " barycenters\n";
         std::cout << "  Found " << surface.filtration.size() << " filtration simplices\n";
         assert(surface.weighted == true);
